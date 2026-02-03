@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Image Gallery</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;}
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f4f6f8;}
+.wrapper{
+    width:100%;
+    max-width:1200px;
+    padding:30px;}
+h2{
+    text-align:center;
+    margin-bottom:25px;}
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+    gap:20px;}
+.gallery img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;}
+.gallery img:hover{
+    transform:scale(1.05);
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);}
+.lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+.lightbox img{
+    max-width:85%;
+    max-height:85%;
+    border-radius:10px;
+}
+.close{
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:35px;
+    color:#fff;
+    cursor:pointer;
+}
+.prev, .next{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:40px;
+    color:#fff;
+    cursor:pointer;
+    padding:10px;
+    user-select:none;
+}
+.prev{ left:30px; }
+.next{ right:30px; }
+.prev:hover, .next:hover, .close:hover{
+    color:#ddd;
+}
+</style></head><body>
+<div class="wrapper">
+    <h2>Interactive Image Gallery</h2>
+    <div class="gallery">
+        <img src="1.webp">
+        <img src="2.jpg">
+        <img src="3.jpg">
+        <img src="4.jpg">
+        <img src="5.jpg">
+        <img src="6.jpg">
+        <img src="7.jpg">
+        <img src="8.jpg">
+    </div></div>
+<div class="lightbox" id="lightbox">
+    <span class="close">&times;</span>
+    <span class="prev">&#10094;</span>
+    <img id="lightboxImg">
+    <span class="next">&#10095;</span>
+</div><script>
+const images = document.querySelectorAll(".gallery img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const closeBtn = document.querySelector(".close");
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
+let currentIndex = 0;
+images.forEach((img, index) => {
+    img.onclick = () => {
+        currentIndex = index;
+        showImage();
+        lightbox.style.display = "flex";};});
+function showImage(){
+    lightboxImg.src = images[currentIndex].src;}
+nextBtn.onclick = () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage();};
+prevBtn.onclick = () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage();};
+closeBtn.onclick = () => lightbox.style.display = "none";
+lightbox.onclick = (e) => {
+    if(e.target === lightbox){
+        lightbox.style.display = "none"; }};
+</script></body></html>
